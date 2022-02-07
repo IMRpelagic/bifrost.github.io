@@ -1,0 +1,41 @@
+# Consumption {#consumption}
+
+The consumption module is used to estimate the consumption of capelin by immature cod in the Barents sea. The model therefore use data on both cod and capelin population and estimate the parameters, mainly $C_{\max}$ and $C_{1/2}$. 
+
+| Symbol  |Definition   |
+|---------|------------ |
+|  $a$, $A$               | Age of capelin, Cod|
+|  $\mbox{Cons}(y,t)$     | Total cod consumption in year $y$, month $t$ |
+|  $\mbox{MatBio}(y,t)$   | Biomass of maturing capelin |
+|  $\mbox{PredAbility}(y,t)$ | Predation ability |
+|  $N_{\mbox{co}}(y,A)$  | Total Number of cod at age $A$ at start of year $y$|
+|  $\mbox{O}_{\mbox{co}}(y,A)$ | Proportion of mature cod |
+|  $\mbox{SV}(y,A)$  | Proportion of immature cod in Svalbard area|
+|  $W_{\mbox{co}}(y,A)$ | Weight of age-A cod|
+|  $C_{1/2}$, $C_{\mbox{max}}$ | (CapTool) Parameters to be estimated in Bifrost|
+|  $\tilde{C}_{\mbox{co}}(y,A)$ | Empirically calculated consumption per cod|
+|  $\mbox{ECons}(y,t,A)$  | Function of empirical consumption|
+|  $z(y,A)$               | Total mortality of cod|
+|  $M_{\mbox{mc}}(y,t)$  | Natural mortality of capelin|
+
+
+- Cod consumption in year $y$, month $t$ -- Type II FR
+    \begin{eqnarray} 
+    \mbox{Cons}(y,t) &=& C_{\mbox{max}}\cdot \frac{\mbox{PredAbility}(y,t)\cdot \mbox{MatBio}(y,t)}{C_{1/2} + \mbox{MatBio}(y,t) } \\
+    \mbox{MatBio}(y,t) &=& \sum\limits_{a=1}^{5}N_{\mbox{mc}}(y,t,a)W_{\mbox{mc}}(y,t,a)
+    \end{eqnarray}
+- PredAbility(y,t):
+    \begin{eqnarray} &=&\sum\limits_{A} N_{\mbox{co}}(y,t,A)\cdot \mbox{CodSuit}(A) \cdot  \nonumber\\ 
+    &&[1-\mbox{O}_{\mbox{co}}(y,A)]\cdot [1-\mbox{SV}(y,A)]\cdot W_{\mbox{co}}^{0.801}(y,A)
+    \end{eqnarray}
+
+- CodSuit(A)$=\frac{\lambda^{\alpha} A^{\alpha-1} e^{-\lambda A}}{\Gamma(\alpha)}$
+
+
+The parameters are estimated by minimizing $\ell$:
+\begin{eqnarray}
+\ell &=& \sum\limits_{y}\left(\sum\limits_{t}\mbox{Cons}(y,t) - \sum\limits_{A,t}\mbox{ECons}(y,t,A) \right)^2\\
+\mbox{ECons}(y,t,A) &=&  \tilde{N}_{\mbox{co}}(y,t,A) \left[1-\mbox{O}_{\mbox{co}}(y,A)\right] \left[1-\mbox{SV}(y,A)\right] \tilde{C}_{\mbox{co}}(y,A) \nonumber\\
+\tilde{N}_{\mbox{co}}(y,t,A) &=& N_{\mbox{co}}(y,A)e^{-(t-0.5)*z(y,A)/12}\\
+M_{\mbox{mc}}(y,t) &=& -\ln \left( 1- \frac{\mbox{Cons}(y,t)}{\mbox{MatBio}(y,t)} \right)
+\end{eqnarray}

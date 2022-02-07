@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 6 Consumption | The bifrost R package</title>
+  <meta name="description" content="This is the a user-guide to the bifrost R package." />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 6 Consumption | The bifrost R package" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is the a user-guide to the bifrost R package." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 6 Consumption | The bifrost R package" />
+  
+  <meta name="twitter:description" content="This is the a user-guide to the bifrost R package." />
+  
+
+<meta name="author" content="Sondre Hølleland and Samuel Subbey, Institute of Marine Research, Norway" />
+
+
+<meta name="date" content="2021-02-25" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="MCsimulation.html"/>
+<link rel="next" href="references.html"/>
+<script src="book_assets/jquery-2.2.3/jquery.min.js"></script>
+<link href="book_assets/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="book_assets/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="book_assets/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="book_assets/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="book_assets/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="book_assets/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="book_assets/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="book_assets/accessible-code-block-0.0.1/empty-anchor.js"></script>
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">bifrost</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Prerequisites</a></li>
+<li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introduction</a></li>
+<li class="chapter" data-level="3" data-path="data.html"><a href="data.html"><i class="fa fa-check"></i><b>3</b> Data</a><ul>
+<li class="chapter" data-level="3.1" data-path="data.html"><a href="data.html#maturity-data"><i class="fa fa-check"></i><b>3.1</b> Maturity data</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="maturity.html"><a href="maturity.html"><i class="fa fa-check"></i><b>4</b> Maturity</a></li>
+<li class="chapter" data-level="5" data-path="MCsimulation.html"><a href="MCsimulation.html"><i class="fa fa-check"></i><b>5</b> Captool simulation</a></li>
+<li class="chapter" data-level="6" data-path="consumption.html"><a href="consumption.html"><i class="fa fa-check"></i><b>6</b> Consumption</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">The bifrost R package</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="consumption" class="section level1">
+<h1><span class="header-section-number">Chapter 6</span> Consumption</h1>
+<p>The consumption module is used to estimate the consumption of capelin by immature cod in the Barents sea. The model therefore use data on both cod and capelin population and estimate the parameters, mainly <span class="math inline">\(C_{\max}\)</span> and <span class="math inline">\(C_{1/2}\)</span>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Symbol</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(a\)</span>, <span class="math inline">\(A\)</span></td>
+<td>Age of capelin, Cod</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\mbox{Cons}(y,t)\)</span></td>
+<td>Total cod consumption in year <span class="math inline">\(y\)</span>, month <span class="math inline">\(t\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\mbox{MatBio}(y,t)\)</span></td>
+<td>Biomass of maturing capelin</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\mbox{PredAbility}(y,t)\)</span></td>
+<td>Predation ability</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(N_{\mbox{co}}(y,A)\)</span></td>
+<td>Total Number of cod at age <span class="math inline">\(A\)</span> at start of year <span class="math inline">\(y\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\mbox{O}_{\mbox{co}}(y,A)\)</span></td>
+<td>Proportion of mature cod</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\mbox{SV}(y,A)\)</span></td>
+<td>Proportion of immature cod in Svalbard area</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(W_{\mbox{co}}(y,A)\)</span></td>
+<td>Weight of age-A cod</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(C_{1/2}\)</span>, <span class="math inline">\(C_{\mbox{max}}\)</span></td>
+<td>(CapTool) Parameters to be estimated in Bifrost</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\tilde{C}_{\mbox{co}}(y,A)\)</span></td>
+<td>Empirically calculated consumption per cod</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\mbox{ECons}(y,t,A)\)</span></td>
+<td>Function of empirical consumption</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(z(y,A)\)</span></td>
+<td>Total mortality of cod</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(M_{\mbox{mc}}(y,t)\)</span></td>
+<td>Natural mortality of capelin</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>Cod consumption in year <span class="math inline">\(y\)</span>, month <span class="math inline">\(t\)</span> – Type II FR
+<span class="math display">\[\begin{eqnarray} 
+  \mbox{Cons}(y,t) &amp;=&amp; C_{\mbox{max}}\cdot \frac{\mbox{PredAbility}(y,t)\cdot \mbox{MatBio}(y,t)}{C_{1/2} + \mbox{MatBio}(y,t) } \\
+  \mbox{MatBio}(y,t) &amp;=&amp; \sum\limits_{a=1}^{5}N_{\mbox{mc}}(y,t,a)W_{\mbox{mc}}(y,t,a)
+  \end{eqnarray}\]</span></p></li>
+<li><p>PredAbility(y,t):
+<span class="math display">\[\begin{eqnarray} &amp;=&amp;\sum\limits_{A} N_{\mbox{co}}(y,t,A)\cdot \mbox{CodSuit}(A) \cdot  \nonumber\\ 
+  &amp;&amp;[1-\mbox{O}_{\mbox{co}}(y,A)]\cdot [1-\mbox{SV}(y,A)]\cdot W_{\mbox{co}}^{0.801}(y,A)
+  \end{eqnarray}\]</span></p></li>
+<li><p>CodSuit(A)<span class="math inline">\(=\frac{\lambda^{\alpha} A^{\alpha-1} e^{-\lambda A}}{\Gamma(\alpha)}\)</span></p></li>
+</ul>
+<p>The parameters are estimated by minimizing <span class="math inline">\(\ell\)</span>:
+<span class="math display">\[\begin{eqnarray}
+\ell &amp;=&amp; \sum\limits_{y}\left(\sum\limits_{t}\mbox{Cons}(y,t) - \sum\limits_{A,t}\mbox{ECons}(y,t,A) \right)^2\\
+\mbox{ECons}(y,t,A) &amp;=&amp;  \tilde{N}_{\mbox{co}}(y,t,A) \left[1-\mbox{O}_{\mbox{co}}(y,A)\right] \left[1-\mbox{SV}(y,A)\right] \tilde{C}_{\mbox{co}}(y,A) \nonumber\\
+\tilde{N}_{\mbox{co}}(y,t,A) &amp;=&amp; N_{\mbox{co}}(y,A)e^{-(t-0.5)*z(y,A)/12}\\
+M_{\mbox{mc}}(y,t) &amp;=&amp; -\ln \left( 1- \frac{\mbox{Cons}(y,t)}{\mbox{MatBio}(y,t)} \right)
+\end{eqnarray}\]</span></p>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="MCsimulation.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="book_assets/gitbook-2.6.7/js/app.min.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/lunr.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["bifrost_userguide.pdf", "bifrost_userguide.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

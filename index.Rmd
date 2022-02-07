@@ -1,0 +1,59 @@
+--- 
+title: "The bifrost R package"
+author: "Sondre Hølleland and Samuel Subbey, Institute of Marine Research, Norway"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+output:
+  bookdown::gitbook:
+    lib_dir: "book_assets"
+  bookdown::pdf_book:
+    keep_tex: yes
+documentclass: book
+bibliography: [book.bib, packages.bib]
+biblio-style: apalike
+link-citations: yes
+description: "This is the a user-guide to the bifrost R package."
+---
+
+# Prerequisites
+
+The R-package **bifrost** is created for doing the capelin assessment. To install the package, you need
+
+* R (preferrably version 4.0.3) and Rtools (4.0)
+* R-package *devtools*
+
+Download and install R here: [https://cran.uib.no/](https://cran.uib.no/).
+
+Download and install Rtools 4.0 here: [https://cran.r-project.org/bin/windows/Rtools/](https://cran.r-project.org/bin/windows/Rtools/).
+This will install the necessary C++ compiler for using TMB (template model builder). 
+
+
+```{r eval=FALSE}
+# If you don't have devtools: 
+install.packages("devtools")
+devtools::install_github("holleland/bifrost", dependencies = TRUE)
+```
+
+This should also install e.g. TMB. 
+
+**Software used in development and testing**: 
+
+- R version: 4.0.3 
+- Rtools version: 4.0
+- OS: Windows 10 
+
+
+```{r include=FALSE}
+# automatically create a bib database for R packages
+knitr::write_bib(c(
+  .packages(), 'bookdown', 'knitr', 'rmarkdown'
+), 'packages.bib')
+```
+
+**Financial support:** 
+
+[Institute of Marine Research](https://www.hi.no) project: 15568 Forvaltningsstrategier for Barentshavet
+
+
+<img src="https://www.hi.no/en/hi/resources/layout/HI-logo-farger-engelsk.svg/original"
+alt="Institute of Marine Research" width="200"/>

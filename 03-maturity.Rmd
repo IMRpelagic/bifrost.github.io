@@ -1,0 +1,16 @@
+# Maturity{#maturity}
+
+For the capelin assessment, maturity is length based. A simple rule of thumb is that fish larger or equal to 14 cm is mature. The model described here allows for a more delicate modelling of maturity. Let $m$ be the maturity depending on length $\ell$ of capelin and the two parameters $p_1$ and $p_2$, i.e.
+\begin{equation*}
+m(\ell)  = \frac{1}{1+\exp\{4p_1(p_2 - \ell)\}}
+\end{equation*}
+Let $N_{\ell, a}$ be the number at age $a$ in length group $\ell$ and $\bar N_a$ is the number of immature capelin at age $a$. That is
+\begin{equation*}
+\bar N_a = \sum_{\ell} (1-m(\ell))N_{\ell,a}.
+\end{equation*}
+
+The maturity parameters are estimated using Template Model Builder (TMB). 
+
+## The data list
+
+

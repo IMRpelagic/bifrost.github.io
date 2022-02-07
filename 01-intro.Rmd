@@ -1,0 +1,35 @@
+# Introduction {#intro}
+
+The motivation for creating the bifrost package at Institute of Marine Research (IMR) is to make the capelin assessment more available and reproducible. There has been a tendency that a single person sits on all the knowledge of how to do the assessment and the necessary estimation of parameters, and when this person is no longer available, those left behind are stranded. So we hope that the bifrost R-package can help in terms of availability, transparency and reproducibilility.  
+
+Another issue with how things used to be done, is that different steps in the assessment used different software. You had one program to estimate parameters in the maturing model, for instance, and another to run Monte Carlo simulations based on these estimates. Here we want a unified software package that allows the user do it all within the same framework. 
+
+A third element of this project is to move away from having to deal with, say 20 different excel sheets, to load the necessary data for the assessment. 
+
+Within the procject, multiple research papers has been published. 
+
+This user-guide will explain how to use the package and what the key features are. The book is divided into chapters. 
+Chapter \@ref(data) explains how the input data should be structured and 
+Chapter \@ref(maturity) presents how to estimate the maturity model for capelin, while Chapter \@ref(MCsimulation) explains how to run the Monte Carlo simulations. The Chapter \@ref(consumption) explains how the consumption model works. 
+
+---------------------------------------------------
+
+The following is just kept as example code 
+
+---------------------------------------------------
+
+```{r nice-fig, fig.cap='Here is a nice figure!', out.width='80%', fig.asp=.75, fig.align='center'}
+par(mar = c(4, 4, .1, .1))
+plot(pressure, type = 'b', pch = 19)
+```
+
+Reference a figure by its code chunk label with the `fig:` prefix, e.g., see Figure \@ref(fig:nice-fig). Similarly, you can reference tables generated from `knitr::kable()`, e.g., see Table \@ref(tab:nice-tab).
+
+```{r nice-tab, tidy=FALSE}
+knitr::kable(
+  head(iris, 20), caption = 'Here is a nice table!',
+  booktabs = TRUE
+)
+```
+
+You can write citations, too. For example, we are using the **bookdown** package [@R-bookdown] in this sample book, which was built on top of R Markdown and **knitr** [@xie2015].
